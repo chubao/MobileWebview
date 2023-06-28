@@ -44,40 +44,40 @@ class _MyAppState extends State<MyApp> {
       appBar: _visible
           ? null
           : AppBar(
-              title: Text("Progress Indicator: ${type.name}",
+              title: Text("DAOL MUN Onboarding",
                   style: const TextStyle(fontSize: 18)),
               actions: [
                 IconButton(
                     onPressed: () async {
                       _showDialogWithFields(context, webViewController!);
                      },
-                    icon: const Icon(Icons.home)),
+                    icon: const Icon(Icons.person)),
                 IconButton(
                     onPressed: () async {
                       await webViewController?.clearCache();
                       await webViewController?.reload();
                     },
                     icon: const Icon(Icons.refresh)),
-                PopupMenuButton(
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      child: Text(ProgressIndicatorType.linear.name),
-                      onTap: () {
-                        setState(() {
-                          type = ProgressIndicatorType.linear;
-                        });
-                      },
-                    ),
-                    PopupMenuItem(
-                      child: Text(ProgressIndicatorType.circular.name),
-                      onTap: () {
-                        setState(() {
-                          type = ProgressIndicatorType.circular;
-                        });
-                      },
-                    ),
-                  ],
-                ),
+                // PopupMenuButton(
+                //   itemBuilder: (context) => [
+                //     PopupMenuItem(
+                //       child: Text(ProgressIndicatorType.linear.name),
+                //       onTap: () {
+                //         setState(() {
+                //           type = ProgressIndicatorType.linear;
+                //         });
+                //       },
+                //     ),
+                //     PopupMenuItem(
+                //       child: Text(ProgressIndicatorType.circular.name),
+                //       onTap: () {
+                //         setState(() {
+                //           type = ProgressIndicatorType.circular;
+                //         });
+                //       },
+                //     ),
+                //   ],
+                // ),
               ],
             ),
       body: SafeArea(
@@ -178,7 +178,6 @@ class _MyAppState extends State<MyApp> {
       final con_device = TextEditingController();
       final con_email = TextEditingController();
       final con_mobile = TextEditingController();
-      String _uri = "";
 
       con_id.text = "123456";
       con_device.text = "123456";
@@ -263,7 +262,7 @@ class _MyAppState extends State<MyApp> {
                                       "https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId=123456&userId=11111&mobile=0970911963&email=kobpeapoo@gmail.com")));
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.black,
+                            // primary: Colors.black,
                             // fixedSize: Size(250, 50),
                           ),
                           child: Text(
