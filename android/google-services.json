@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "406805999361",
+    "firebase_url": "https://chubao-64d5c.firebaseio.com",
+    "project_id": "chubao-64d5c",
+    "storage_bucket": "chubao-64d5c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406805999361:android:800a6b2dba9ec2d4a43500",
+        "android_client_info": {
+          "package_name": "com.example.oa_webview"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "406805999361-ec80gkm2ko6pi55j8j80ppn13o2kmhsj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.oa_webview",
+            "certificate_hash": "c86b71154d0c77879e5a568ccc718d076a6b28d2"
+          }
+        },
+        {
+          "client_id": "406805999361-aavdn49vdr1kk0jt3i0ff8kb5scahgir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAebVlwFJVyk4mTLiRGxl1aVmKk3l9MmLs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "406805999361-aavdn49vdr1kk0jt3i0ff8kb5scahgir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
