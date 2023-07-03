@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:oa_webview/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
@@ -20,6 +21,30 @@ class _OAWebViewState extends State<OAWebView> {
   @override
   void initState() {
     super.initState();
+
+    String? con_id = "1";
+    String? con_device = "ABC1234";
+    String? con_email = "test@gmail.com";
+    String? con_mobile = "0951929299";
+    
+    Future<Users> data = ShareData().getData();
+      data.then((value){
+        if (value.userid == ""){
+          con_id = value.userid;
+          con_device = value.deviceid;
+          con_email = value.email;
+          con_mobile = value.moible;
+        }
+        else
+        {
+          Users users = new Users();
+          users.userid = con_id;
+          users.deviceid = con_device;
+          users.email = con_email;
+          users.moible = con_mobile;
+          new ShareData().setData(users);
+        }
+      });
 
 // #docregion platform_features
     late final PlatformWebViewControllerCreationParams params;
@@ -85,7 +110,8 @@ class _OAWebViewState extends State<OAWebView> {
         },
       )
       ..loadRequest(Uri.parse(
-          'https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId=123456&userId=11111&mobile=0970911963&email=kobpeapoo@gmail.com'));
+          "https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId="+ con_device! +"&userId="+ con_id! +"&mobile=0"+ con_mobile! +"&email="+ con_email!)
+          );
 
     // #docregion platform_features
     if (controller.platform is AndroidWebViewController) {
@@ -145,9 +171,10 @@ class _OAWebViewState extends State<OAWebView> {
   Widget favoriteButton() {
     return FloatingActionButton(
       onPressed: () async {
-        setState(() {
-          _visible = !_visible;
-        });
+        // setState(() {
+        //   _visible = !_visible;
+        // });
+        _showDialogWithFields(context, _controller);
       },
       child: const Icon(Icons.favorite),
     );
@@ -160,10 +187,16 @@ class _OAWebViewState extends State<OAWebView> {
     final con_email = TextEditingController();
     final con_mobile = TextEditingController();
 
-    con_id.text = "123456";
-    con_device.text = "123456";
-    con_email.text = "kobpeapoo@gmail.com";
-    con_mobile.text = "0970911963";
+    Future<Users> data = ShareData().getData();
+    data.then((value){
+      if (value != null){
+        con_id.text = value.userid!;
+        con_device.text = value.deviceid!;
+        con_email.text = value.email!;
+        con_mobile.text = value.moible!;
+      }
+    });
+
     showDialog(
         context: context,
         builder: (context) {
@@ -237,8 +270,14 @@ class _OAWebViewState extends State<OAWebView> {
                       padding: const EdgeInsets.all(6.0),
                       child: ElevatedButton(
                         onPressed: () async {
+                          Users users = new Users();
+                          users.userid = con_id.text;
+                          users.deviceid = con_device.text;
+                          users.email = con_email.text;
+                          users.moible = con_mobile.text;
+                          new ShareData().setData(users);
                           await _controller.loadRequest(Uri.parse(
-                              "https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId=123456&userId=11111&mobile=0970911963&email=kobpeapoo@gmail.com"));
+                              "https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId=" + con_device.text + "&userId=" + con_id.text + "&mobile="+ con_mobile.text +"&email=" + con_email.text));
                         },
                         style: ElevatedButton.styleFrom(
                             // primary: Colors.black,
