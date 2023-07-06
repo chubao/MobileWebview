@@ -1,11 +1,8 @@
 
-import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:oa_webview/webview.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 enum ProgressIndicatorType { circular, linear }
@@ -39,8 +36,8 @@ class _MyAppState extends State<MyApp> {
       appBar: _visible
           ? null
           : AppBar(
-        title: Text("DAOL MUN Onboarding",
-            style: const TextStyle(fontSize: 18)),
+        title: const Text("DAOL MUN Onboarding",
+            style: TextStyle(fontSize: 18)),
         actions: [
           IconButton(
               onPressed: () async {
@@ -148,35 +145,35 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void _showDialogWithFields(BuildContext context, InAppWebViewController _controller) {
-    final con_id = TextEditingController();
-    final con_device = TextEditingController();
-    final con_email = TextEditingController();
-    final con_mobile = TextEditingController();
+  void _showDialogWithFields(BuildContext context, InAppWebViewController controller) {
+    final conId = TextEditingController();
+    final conDevice = TextEditingController();
+    final conEmail = TextEditingController();
+    final conMobile = TextEditingController();
 
-    con_id.text = "123456";
-    con_device.text = "123456";
-    con_email.text = "kobpeapoo@gmail.com";
-    con_mobile.text = "0970911963";
+    conId.text = "123456";
+    conDevice.text = "123456";
+    conEmail.text = "kobpeapoo@gmail.com";
+    conMobile.text = "0970911963";
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(
                   20.0,
                 ),
               ),
             ),
-            contentPadding: EdgeInsets.only(
+            contentPadding: const EdgeInsets.only(
               top: 10.0,
             ),
-            title: Text(
+            title: const Text(
               "Start request",
               style: TextStyle(fontSize: 20.0),
             ),
-            content: Container(
+            content: SizedBox(
               height: 400,
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(6.0),
@@ -188,8 +185,8 @@ class _MyAppState extends State<MyApp> {
                     Container(
                       padding: const EdgeInsets.all(6.0),
                       child: TextField(
-                        controller: con_id,
-                        decoration: InputDecoration(
+                        controller: conId,
+                        decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Enter User ID here',
                             labelText: 'User ID'),
@@ -198,8 +195,8 @@ class _MyAppState extends State<MyApp> {
                     Container(
                       padding: const EdgeInsets.all(6.0),
                       child: TextField(
-                        controller: con_device,
-                        decoration: InputDecoration(
+                        controller: conDevice,
+                        decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Enter Device ID here',
                             labelText: 'Device ID'),
@@ -208,8 +205,8 @@ class _MyAppState extends State<MyApp> {
                     Container(
                       padding: const EdgeInsets.all(6.0),
                       child: TextField(
-                        controller: con_mobile,
-                        decoration: InputDecoration(
+                        controller: conMobile,
+                        decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Enter Mobile here',
                             labelText: 'Mobile'),
@@ -218,8 +215,8 @@ class _MyAppState extends State<MyApp> {
                     Container(
                       padding: const EdgeInsets.all(6.0),
                       child: TextField(
-                        controller: con_email,
-                        decoration: InputDecoration(
+                        controller: conEmail,
+                        decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Enter Email here',
                             labelText: 'Email'),
@@ -240,7 +237,7 @@ class _MyAppState extends State<MyApp> {
                           // primary: Colors.black,
                           // fixedSize: Size(250, 50),
                         ),
-                        child: Text(
+                        child: const Text(
                           "Submit",
                         ),
                       ),
