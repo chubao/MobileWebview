@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ShareData {
   Future<Users> getData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    Users users = new Users();
+    Users users = Users();
     users.userid = prefs.getString('userid')!;
     users.deviceid = prefs.getString('deviceid')!;
     users.email = prefs.getString('email')!;

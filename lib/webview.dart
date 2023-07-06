@@ -16,33 +16,33 @@ class OAWebView extends StatefulWidget {
 
 class _OAWebViewState extends State<OAWebView> {
   late final WebViewController _controller;
-  bool _visible = true;
+  final bool _visible = true;
 
   @override
   void initState() {
     super.initState();
 
-    String? con_id = "1";
-    String? con_device = "ABC1234";
-    String? con_email = "test@gmail.com";
-    String? con_mobile = "0951929299";
+    String? conId = "1";
+    String? conDevice = "ABC1234";
+    String? conEmail = "test@gmail.com";
+    String? conMobile = "0951929299";
     
     Future<Users> data = ShareData().getData();
       data.then((value){
-        if (value.userid == ""){
-          con_id = value.userid;
-          con_device = value.deviceid;
-          con_email = value.email;
-          con_mobile = value.moible;
+        if (value.userid != ""){
+          conId = value.userid;
+          conDevice = value.deviceid;
+          conEmail = value.email;
+          conMobile = value.moible;
         }
         else
         {
-          Users users = new Users();
-          users.userid = con_id;
-          users.deviceid = con_device;
-          users.email = con_email;
-          users.moible = con_mobile;
-          new ShareData().setData(users);
+          Users users = Users();
+          users.userid = conId;
+          users.deviceid = conDevice;
+          users.email = conEmail;
+          users.moible = conMobile;
+          ShareData().setData(users);
         }
       });
 
@@ -110,7 +110,7 @@ class _OAWebViewState extends State<OAWebView> {
         },
       )
       ..loadRequest(Uri.parse(
-          "https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId="+ con_device! +"&userId="+ con_id! +"&mobile=0"+ con_mobile! +"&email="+ con_email!)
+          "https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId=${conDevice!}&userId=${conId!}&mobile=${conMobile!}&email=${conEmail!}")
           );
 
     // #docregion platform_features
@@ -157,7 +157,7 @@ class _OAWebViewState extends State<OAWebView> {
                 NavigationControls(webViewController: _controller),
                 IconButton(
                     onPressed: () async {
-                      _showDialogWithFields(context, _controller!);
+                      _showDialogWithFields(context, _controller);
                     },
                     icon: const Icon(Icons.person)),
                 //SampleMenu(webViewController: _controller),
@@ -181,41 +181,39 @@ class _OAWebViewState extends State<OAWebView> {
   }
 
   void _showDialogWithFields(
-      BuildContext context, WebViewController _controller) {
-    final con_id = TextEditingController();
-    final con_device = TextEditingController();
-    final con_email = TextEditingController();
-    final con_mobile = TextEditingController();
+      BuildContext context, WebViewController controller) {
+    final conId = TextEditingController();
+    final conDevice = TextEditingController();
+    final conEmail = TextEditingController();
+    final conMobile = TextEditingController();
 
     Future<Users> data = ShareData().getData();
     data.then((value){
-      if (value != null){
-        con_id.text = value.userid!;
-        con_device.text = value.deviceid!;
-        con_email.text = value.email!;
-        con_mobile.text = value.moible!;
-      }
+      conId.text = value.userid!;
+      conDevice.text = value.deviceid!;
+      conEmail.text = value.email!;
+      conMobile.text = value.moible!;
     });
 
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(
                   20.0,
                 ),
               ),
             ),
-            contentPadding: EdgeInsets.only(
+            contentPadding: const EdgeInsets.only(
               top: 10.0,
             ),
-            title: Text(
+            title: const Text(
               "Start request",
               style: TextStyle(fontSize: 20.0),
             ),
-            content: Container(
+            content: SizedBox(
               height: 400,
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(6.0),
@@ -227,8 +225,8 @@ class _OAWebViewState extends State<OAWebView> {
                     Container(
                       padding: const EdgeInsets.all(6.0),
                       child: TextField(
-                        controller: con_id,
-                        decoration: InputDecoration(
+                        controller: conId,
+                        decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Enter User ID here',
                             labelText: 'User ID'),
@@ -237,8 +235,8 @@ class _OAWebViewState extends State<OAWebView> {
                     Container(
                       padding: const EdgeInsets.all(6.0),
                       child: TextField(
-                        controller: con_device,
-                        decoration: InputDecoration(
+                        controller: conDevice,
+                        decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Enter Device ID here',
                             labelText: 'Device ID'),
@@ -247,8 +245,8 @@ class _OAWebViewState extends State<OAWebView> {
                     Container(
                       padding: const EdgeInsets.all(6.0),
                       child: TextField(
-                        controller: con_mobile,
-                        decoration: InputDecoration(
+                        controller: conMobile,
+                        decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Enter Mobile here',
                             labelText: 'Mobile'),
@@ -257,8 +255,8 @@ class _OAWebViewState extends State<OAWebView> {
                     Container(
                       padding: const EdgeInsets.all(6.0),
                       child: TextField(
-                        controller: con_email,
-                        decoration: InputDecoration(
+                        controller: conEmail,
+                        decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Enter Email here',
                             labelText: 'Email'),
@@ -270,20 +268,20 @@ class _OAWebViewState extends State<OAWebView> {
                       padding: const EdgeInsets.all(6.0),
                       child: ElevatedButton(
                         onPressed: () async {
-                          Users users = new Users();
-                          users.userid = con_id.text;
-                          users.deviceid = con_device.text;
-                          users.email = con_email.text;
-                          users.moible = con_mobile.text;
-                          new ShareData().setData(users);
-                          await _controller.loadRequest(Uri.parse(
-                              "https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId=" + con_device.text + "&userId=" + con_id.text + "&mobile="+ con_mobile.text +"&email=" + con_email.text));
+                          Users users = Users();
+                          users.userid = conId.text;
+                          users.deviceid = conDevice.text;
+                          users.email = conEmail.text;
+                          users.moible = conMobile.text;
+                          ShareData().setData(users);
+                          await controller.loadRequest(Uri.parse(
+                              "https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId=${conDevice.text}&userId=${conId.text}&mobile=${conMobile.text}&email=${conEmail.text}"));
                         },
                         style: ElevatedButton.styleFrom(
                             // primary: Colors.black,
                             // fixedSize: Size(250, 50),
                             ),
-                        child: Text(
+                        child: const Text(
                           "Submit",
                         ),
                       ),
