@@ -11,7 +11,6 @@ class OAWebView extends StatefulWidget {
 
   @override
   State<OAWebView> createState() => _OAWebViewState();
-
 }
 
 class _OAWebViewState extends State<OAWebView> {
@@ -20,32 +19,13 @@ class _OAWebViewState extends State<OAWebView> {
 
   @override
   void initState() {
-    super.initState();
-
     String? conId = "1";
     String? conDevice = "ABC1234";
     String? conEmail = "test@gmail.com";
     String? conMobile = "0951929299";
-    
-    Future<Users> data = ShareData().getData();
-      data.then((value){
-        if (value.userid != ""){
-          conId = value.userid;
-          conDevice = value.deviceid;
-          conEmail = value.email;
-          conMobile = value.moible;
-        }
-        else
-        {
-          Users users = Users();
-          users.userid = conId;
-          users.deviceid = conDevice;
-          users.email = conEmail;
-          users.moible = conMobile;
-          ShareData().setData(users);
-        }
-      });
+    String? url = "";
 
+    super.initState();
 // #docregion platform_features
     late final PlatformWebViewControllerCreationParams params;
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
@@ -60,14 +40,14 @@ class _OAWebViewState extends State<OAWebView> {
     final WebViewController controller =
         WebViewController.fromPlatformCreationParams(params,
             onPermissionRequest: (WebViewPermissionRequest request) async {
-                final cameraStatus = await Permission.camera.request();
-                request.grant();
-        });
+      final cameraStatus = await Permission.camera.request();
+      request.grant();
+    });
     // #enddocregion platform_features
 
     controller
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
+      //..setBackgroundColor(const Color(0x00000000))
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
@@ -108,17 +88,14 @@ class _OAWebViewState extends State<OAWebView> {
             SnackBar(content: Text(message.message)),
           );
         },
-      )
-      ..loadRequest(Uri.parse(
-          "https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId=${conDevice!}&userId=${conId!}&mobile=${conMobile!}&email=${conEmail!}")
-          );
+      );
+    // ..loadRequest( Uri.parse(url!));
 
     // #docregion platform_features
     if (controller.platform is AndroidWebViewController) {
       AndroidWebViewController.enableDebugging(true);
       (controller.platform as AndroidWebViewController)
           .setMediaPlaybackRequiresUserGesture(false);
-
     }
     if (controller.platform is WebKitWebViewController) {
       (controller.platform as WebKitWebViewController)
@@ -130,22 +107,41 @@ class _OAWebViewState extends State<OAWebView> {
     // #enddocregion platform_features
 
     _controller = controller;
+
+    try {
+      Future<Users> data = ShareData().getData();
+      if (data != null) {
+        data.then((value) async {
+          conId = value.userid ?? conId;
+          conDevice = value.deviceid ?? conDevice;
+          conEmail = value.email ?? conEmail;
+          conMobile = value.moible ?? conMobile;
+          Users users = Users();
+          users.userid = conId;
+          users.deviceid = conDevice;
+          users.email = conEmail;
+          users.moible = conMobile;
+          ShareData().setData(users);
+          url =
+              "https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId=$conDevice&userId=$conId&mobile=$conMobile&email=$conEmail";
+          await _controller.loadRequest(Uri.parse(url!));
+        });
+      }
+    } catch (e) {
+      Users users = Users();
+      users.userid = conId;
+      users.deviceid = conDevice;
+      users.email = conEmail;
+      users.moible = conMobile;
+      ShareData().setData(users);
+      url =
+          "https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId=$conDevice&userId=$conId&mobile=$conMobile&email=$conEmail";
+      _controller.loadRequest(Uri.parse(url!));
+    } finally {}
   }
-  // Future<void> requestCameraPermission() async {
-  //   final status = await Permission.camera.request();
-  //   debugPrint('Permission Status ${status}');
-  //   if (status == PermissionStatus.granted) {
-  //     // Permission granted.
-  //   } else if (status == PermissionStatus.denied) {
-  //     // Permission denied.
-  //   } else if (status == PermissionStatus.permanentlyDenied) {
-  //     // Permission permanently denied.
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: _visible
@@ -163,7 +159,10 @@ class _OAWebViewState extends State<OAWebView> {
                 //SampleMenu(webViewController: _controller),
               ],
             ),
-      body: SafeArea(child: WebViewWidget(controller: _controller)),
+      body: SafeArea(
+          child: WebViewWidget(
+        controller: _controller,
+      )),
       floatingActionButton: favoriteButton(),
     );
   }
@@ -182,17 +181,17 @@ class _OAWebViewState extends State<OAWebView> {
 
   void _showDialogWithFields(
       BuildContext context, WebViewController controller) {
-    final conId = TextEditingController();
-    final conDevice = TextEditingController();
-    final conEmail = TextEditingController();
-    final conMobile = TextEditingController();
+    final _conId = TextEditingController();
+    final _conDevice = TextEditingController();
+    final _conEmail = TextEditingController();
+    final _conMobile = TextEditingController();
 
     Future<Users> data = ShareData().getData();
-    data.then((value){
-      conId.text = value.userid!;
-      conDevice.text = value.deviceid!;
-      conEmail.text = value.email!;
-      conMobile.text = value.moible!;
+    data.then((value) {
+      _conId.text = value.userid!;
+      _conDevice.text = value.deviceid!;
+      _conEmail.text = value.email!;
+      _conMobile.text = value.moible!;
     });
 
     showDialog(
@@ -225,7 +224,7 @@ class _OAWebViewState extends State<OAWebView> {
                     Container(
                       padding: const EdgeInsets.all(6.0),
                       child: TextField(
-                        controller: conId,
+                        controller: _conId,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Enter User ID here',
@@ -235,7 +234,7 @@ class _OAWebViewState extends State<OAWebView> {
                     Container(
                       padding: const EdgeInsets.all(6.0),
                       child: TextField(
-                        controller: conDevice,
+                        controller: _conDevice,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Enter Device ID here',
@@ -245,7 +244,7 @@ class _OAWebViewState extends State<OAWebView> {
                     Container(
                       padding: const EdgeInsets.all(6.0),
                       child: TextField(
-                        controller: conMobile,
+                        controller: _conMobile,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Enter Mobile here',
@@ -255,7 +254,7 @@ class _OAWebViewState extends State<OAWebView> {
                     Container(
                       padding: const EdgeInsets.all(6.0),
                       child: TextField(
-                        controller: conEmail,
+                        controller: _conEmail,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Enter Email here',
@@ -269,13 +268,13 @@ class _OAWebViewState extends State<OAWebView> {
                       child: ElevatedButton(
                         onPressed: () async {
                           Users users = Users();
-                          users.userid = conId.text;
-                          users.deviceid = conDevice.text;
-                          users.email = conEmail.text;
-                          users.moible = conMobile.text;
+                          users.userid = _conId.text;
+                          users.deviceid = _conDevice.text;
+                          users.email = _conEmail.text;
+                          users.moible = _conMobile.text;
                           ShareData().setData(users);
                           await controller.loadRequest(Uri.parse(
-                              "https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId=${conDevice.text}&userId=${conId.text}&mobile=${conMobile.text}&email=${conEmail.text}"));
+                              "https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId=${_conDevice.text}&userId=${_conId.text}&mobile=${_conMobile.text}&email=${_conEmail.text}"));
                         },
                         style: ElevatedButton.styleFrom(
                             // primary: Colors.black,

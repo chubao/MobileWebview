@@ -5,10 +5,13 @@ class ShareData {
   Future<Users> getData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     Users users = Users();
-    users.userid = prefs.getString('userid')!;
-    users.deviceid = prefs.getString('deviceid')!;
-    users.email = prefs.getString('email')!;
-    users.moible = prefs.getString('moible')!;
+    try {
+      users.userid =  prefs.getString('userid')!;
+      users.deviceid =  prefs.getString('deviceid')!;
+      users.email =  prefs.getString('email')!;
+      users.moible =  prefs.getString('moible')!;
+    } catch (e) {
+    }
     return users;
   }
 
