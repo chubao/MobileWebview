@@ -123,7 +123,7 @@ class _OAWebViewState extends State<OAWebView> {
           users.moible = conMobile;
           ShareData().setData(users);
           url =
-              "https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId=$conDevice&userId=$conId&mobile=$conMobile&email=$conEmail";
+              "https://dev-oa.daolmun.com/oa?deviceId=$conDevice&userId=$conId&mobile=$conMobile&email=$conEmail";
           await _controller.loadRequest(Uri.parse(url!));
         });
       }
@@ -135,7 +135,7 @@ class _OAWebViewState extends State<OAWebView> {
       users.moible = conMobile;
       ShareData().setData(users);
       url =
-          "https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId=$conDevice&userId=$conId&mobile=$conMobile&email=$conEmail";
+          "https://dev-oa.daolmun.com/oa?deviceId=$conDevice&userId=$conId&mobile=$conMobile&email=$conEmail";
       _controller.loadRequest(Uri.parse(url!));
     } finally {}
   }
@@ -274,7 +274,7 @@ class _OAWebViewState extends State<OAWebView> {
                           users.moible = _conMobile.text;
                           ShareData().setData(users);
                           await controller.loadRequest(Uri.parse(
-                              "https://dev-oa-web-daolmun.daolsecurities.co.th/oa?deviceId=${_conDevice.text}&userId=${_conId.text}&mobile=${_conMobile.text}&email=${_conEmail.text}"));
+                              "https://dev-oa.daolmun.com/oa?deviceId=${_conDevice.text}&userId=${_conId.text}&mobile=${_conMobile.text}&email=${_conEmail.text}"));
                         },
                         style: ElevatedButton.styleFrom(
                             // primary: Colors.black,
